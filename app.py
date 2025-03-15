@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Streamlit Page Title
 st.title("📊 System Logs Analysis Dashboard")
@@ -56,23 +55,16 @@ if uploaded_file is not None:
         # Log Level Distribution
         st.subheader("📌 Log Level Distribution")
         log_counts = df_filtered["log_level"].value_counts()
-        fig, ax = plt.subplots()
-        ax.pie(log_counts, labels=log_counts.index, autopct='%1.1f%%', startangle=90)
-        ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle
-        st.pyplot(fig)
+
+        # Using Streamlit's bar chart to visualize log level distribution
+        st.bar_chart(log_counts)
 
         # Daily Log Trends
         st.subheader("📈 Daily Log Trends")
         df_daily_filtered = df_filtered.resample("D").count()
-        fig, ax = plt.subplots(figsize=(12, 5))
-        ax.plot(df_daily_filtered.index, df_daily_filtered["log_level"], marker="o", linestyle="-", label="Total Logs")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Log Count")
-        ax.set_title("System Logs Over Time")
-        ax.legend()
-        plt.xticks(rotation=45)
-        plt.grid()
-        st.pyplot(fig)
+
+        # Using Streamlit's line chart to visualize daily log trends
+        st.line_chart(df_daily_filtered["log_level"])
 
         # Show recent logs
         st.subheader("📜 Recent Log Entries")
